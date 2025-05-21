@@ -10,3 +10,5 @@ console.log( hello( greeting , myname ) );
 
 const x: number = 100;
 console.log(x * 3);
+
+console.log('whats happen');
