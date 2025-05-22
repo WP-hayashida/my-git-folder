@@ -49,3 +49,31 @@ const summary :Summary = johnDetail;//代入できる。構造的部分型とし
 const johnSummary:Summary = { name: "John" };
 const detail: Detail = johnSummary;//代入できない。構造的部分型として互換がない。
 
+const numbers = [1, 2, 3];
+let numbers1: number[];
+let strings: Array<string>;
+
+const colors = ["red", "green", "blue"];
+console.log(colors[0]);
+
+colors[1] = "yellow";
+console.log(colors);
+
+const numbers_readonly: readonly number[] = [1, 2, 3];
+const strings_readonly: ReadonlyArray<string> = ["hello", "world"];
+numbers_readonly[0] = 4//変更できない
+strings_readonly.push("!");//要素を追加できない
+
+const numbers_for = [1, 2, 3];
+for (const num of numbers) {
+    console.log(num);//1, 2, 3と出力される
+}
+
+let tuple: [string, number];
+tuple = ["hello",18];//代入できる
+tuple = [10, "hello"];//順序が正しくないため、代入できない。
+tuple = ["hello", 10, "world"];//要素が多すぎるため代入できない。
+
+const tuple_access: [string, number] = ["hello", 10];
+console.log(tuple_access[0]);
+
