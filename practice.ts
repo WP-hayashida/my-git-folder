@@ -77,3 +77,23 @@ tuple = ["hello", 10, "world"];//要素が多すぎるため代入できない�
 const tuple_access: [string, number] = ["hello", 10];
 console.log(tuple_access[0]);
 
+const john = { name: "John", age: 20 };
+console.log(john.name);
+
+let obj : { name: string; age: number };
+let obj_readonly: { readonly name: string; age: number};
+obj_readonly = { name: "John", age: 20 };
+obj_readonly.name = "Tom";//readonlyのプラパティに代入できない
+
+let obj_option: { name: string, age?: number };
+obj_option = { name: "John" };//オプションプロパティ?付きは省略可能
+
+const obj_method = {
+    a: 1,
+    b: 2,
+    sum(): number {
+        return this.a + this.b;
+    },
+}
+console.log(obj_method.sum());
+
