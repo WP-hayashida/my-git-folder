@@ -97,3 +97,76 @@ const obj_method = {
 }
 console.log(obj_method.sum());
 
+let obj_index: { [key: string]: number };
+obj_index = { key1: 1, key2: 2 };
+console.log(obj_index["key1"]);
+console.log(obj_index[1]);
+
+const name_shorthand = "John";
+const age_shorthand = 20;
+const obj_shorthand = { name_shorthand, age_shorthand };
+console.log(obj_shorthand);
+
+function printLength(obj: { a?: string}) {
+    console.log(obj.a?.length);
+}
+printLength({ a: "hello" });//=>5
+printLength({});//=>undefined
+
+const map = new Map();
+map.set("name", "John");
+map.set("age", "20");
+
+console.log(map.get("name"));//=>'John'
+
+let people: Map<string, number>;
+
+for(const [key, value] of map) {
+    console.log(key, value);//各エントリーがキーと値の配列として追加順位取得可
+}
+
+const set = new Set();
+set.add(1);
+set.add(2);
+set.add(2);//同じ値は追加されない
+console.log(set);//=>Set {1, 2}
+
+let numSet: Set<number>;
+
+for (const value of set) {
+    console.log(value);
+}
+
+enum Color {
+    Red = "red",
+    Green = "green",
+    Blue = "blue",
+}
+const myColor: Color = Color.Red;
+
+let value_union: boolean | number;
+value_union = true;//代入できる
+value_union = 100;//代入できる
+value_union = "John";//代入できない
+
+type Triangle = { kind: "triangle"; base: number; height: number };
+type Rectangle = { kind: "rectangle"; width: number; height: number };
+type Shape = Triangle | Rectangle;
+
+function getArea(shape: Shape): number {
+    //共通のプロパティkindを利用して型を判定する
+    switch(shape.kind) {
+        case "triangle":
+            return (shape.base * shape.height) / 2;
+        case "rectangle":
+            return shape.width * shape.height;
+    }
+}
+
+type Octopus = { swims: boolean };
+type Cat = { nightVision: boolean };
+type Octocat = Octopus & Cat;
+
+const octocat: Octocat = { swims: true, nightVision: true };
+console.log(octocat);//=> { swims: true, nightVision: true }
+
