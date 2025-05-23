@@ -269,3 +269,49 @@ class Person_shorthand {
 
 const john_shorthand = new Person_shorthand("John", 20);
 john_shorthand.introduce();
+
+//---------------------------------
+//例外処理
+//---------------------------------
+let bigdata: string | null; //try内letはfinalyなどではスコープできないので外で定義
+try {
+  bigdata = "This is big data ...............";
+  throw new Error("An erro occurred!"); //エラーを投げる
+} catch (error) {
+  //エラーをキャッチ
+  console.log(error);
+} finally {
+  //絶対最後に実行
+  bigdata = null; //でかいデータ解放
+}
+
+//---------------------------------
+//例外クラス
+//---------------------------------
+class CustomError extends Error {
+  code = "CustomError";
+
+  constructor(message?: string) {
+    super(message);
+  }
+}
+try {
+  throw new CustomError("This is a custom error");
+} catch (error) {
+  if (error instanceof CustomError) {
+    console.log(`${error.code}:${error.message}`);
+  }
+}
+
+//---------------------------------
+//非同期処理
+//---------------------------------
+const promise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("Primise resolved");
+  }, 2000);
+});
+promise.then((data) => {
+  console.log(data);
+});
+//=>'Promise resolved'
