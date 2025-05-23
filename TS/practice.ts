@@ -315,3 +315,132 @@ promise.then((data) => {
   console.log(data);
 });
 //=>'Promise resolved'
+
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+async function asyncFunction() {
+  console.log("Start");
+  await delay(2000);
+  console.log("End");
+}
+
+asyncFunction();
+//=>'Start'
+//２秒後
+//=>'End'
+
+function delay_advanced(ms: number, label: string): Promise<string> {
+  return new Promise((resolve) =>
+    setTimeout(() => resolve(`${label} done`), ms)
+  );
+}
+
+async function runAll() {
+  console.log("Start all");
+  const results = await Promise.all([
+    delay_advanced(1000, "Task A"),
+    delay_advanced(2000, "Task B"),
+    delay_advanced(1500, "Task C"),
+  ]);
+  console.log(results); //["Task A done","Task B done","Task C done"]
+}
+runAll();
+
+//---------------------------------
+//ジェネリクス
+//---------------------------------
+//型の再利用性が向上し、型の一貫性を保てる。
+//ジェネリクスを使用すると、型変数を導入でき、これにより機能の一部を一般化できる
+//Tが型変数
+function identity<T>(arg: T): T {
+  return arg;
+}
+
+//型変数Tにstringを割り当てる
+const output1 = identity<string>("myString");
+//const output1: string
+
+//型変数にTにnumberを割り当てる
+const output2 = identity<number>(100);
+//const output2: number
+//関数呼び出し時に型を注入できる
+//どんな方にも使える関数を１つだけかけば良い
+//anyを使わず型情報を保持したまま処理可能
+function getFirstElement<T>(arr: T[]): T {
+  return Array[0];
+}
+const first = getFirstElement<number>([1, 2, 3]); //firstの型はnumber
+
+function pair<T, U>(a: T, b: U): [T, U] {
+  return [a, b];
+}
+const result = pair<string, number>("hello", 123); //resultの型:[string,number]
+
+//---------------------------------
+//モジュール
+//---------------------------------
+//他モジュールと共有するコードと、モジュール内部の限定コードとを分けることを可能にする。
+
+//<greeter.ts>
+export function greet_module(name: string) {
+  return `Hello, ${name}!`;
+}
+
+import { greet_module } from "./greeter";
+console.log(greet_module("TypeScript"));
+//=>'Hello, TypeScript!'
+
+const object = {
+  name: "TypeScript",
+  version: 3.9,
+};
+type ObjectType = typeof object;
+
+type Point = {
+  x: number;
+  y: number;
+};
+
+type Key = keyof Point;
+const key1: Key = "x";
+const key2: Key = "y";
+const key3: Key = "z"; //key=zが無いため代入不可
+
+type Person_Required = {
+  nema: string;
+  age?: number;
+};
+type RequiredPerson = Required<Person_Required>; //ageのオプション?プロパティを必須に変える
+
+type Person_Partial = {
+  name: string;
+  age: number;
+};
+type OptionalPerson = Partial<Person_Partial>; //方のすべてのプロパティをオプションに変更
+//Readonlyもある
+
+type ThreeLettreRecord = Record<"one" | "two" | "three", string>; //オブジェクトすべてのプロパティ値をまとめて設定
+
+type Person_Pick = {
+  name: string;
+  age: number;
+  address: String;
+};
+type PersonNameAndAge = Pick<Person_Pick, "name" | "age">; //オブジェクトから特定のプロパティだけを拾い出す
+type Person_Omit = {
+  name: string;
+  age: number;
+  address: string;
+};
+type PersonWithoutAddress = Omit<Person_Omit, "address">;
+
+type T1 = number | string | boolean;
+type T2 = Exclude<T1, boolean>; //ユニオン型から特定の方を除外する
+
+type T3 = number | string | boolean;
+type T4 = string | boolean;
+type T5 = Extract<T3, T4>; //2つのユニオン型の共通部分を抽出する
+
+type T6 = string | null | undefined;
+type T7 = NonNullable<T6>; //nullまたはundefinedを含む型からいずれも除外する

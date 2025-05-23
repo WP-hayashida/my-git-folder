@@ -7,3 +7,8 @@ export class User implements IUser {
     console.log(`Hello, ${this.name}`);
   }
 }
+
+export type MyObject = {
+  name: string;
+  age: number;
+};
