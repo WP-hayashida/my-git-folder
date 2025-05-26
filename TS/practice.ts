@@ -444,3 +444,29 @@ type T5 = Extract<T3, T4>; //2つのユニオン型の共通部分を抽出す�
 
 type T6 = string | null | undefined;
 type T7 = NonNullable<T6>; //nullまたはundefinedを含む型からいずれも除外する
+
+function stringify(value: number): string {
+  return `${value}`;
+}
+type StringifyReturnType = ReturnType<typeof stringify>; //関数の戻り値の型を取得
+
+const promise1 = Promise.resolve("data");
+const promise2 = Promise.resolve(Promise.resolve("data"));
+
+type Data1 = Awaited<typeof promise1>; //Promiseの戻り値の型を取得する
+type Data2 = Awaited<typeof promise2>; //解決するまで遡る
+
+type Person_MappedTypes = {
+  name: string;
+  age: number;
+};
+
+type ReadOnlyPerson = {
+  readonly [K in keyof Person_MappedTypes]: Person_MappedTypes[K]; //既存の型から新しい型を生成する
+};
+
+type Person_IndexAccess = {
+  name: string;
+  age: number;
+};
+type Name = Person_IndexAccess["name"];
